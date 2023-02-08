@@ -9,6 +9,7 @@ from pylars.plotting import *
 from properties_plots import *
 from waveform_plots import *
 from cut_plots import *
+from LED_ON_plots import *
 
 # Load my style ;)
 
@@ -29,9 +30,10 @@ coolwarm = ListedColormap(coolwarm)
 if __name__ == '__main__':
     plot_properties = False
     plot_waveforms = False
-    plot_cuts = True
+    plot_cuts = False
+    plot_LED = True
 
-    if plot_properties == True:
+    if plot_properties:
         print('Plotting properties of sensors')
 
         ## 6x6 ##
@@ -111,7 +113,7 @@ if __name__ == '__main__':
                             'linear', coolwarm,
                             'tile_NOerrorbars', errorbars = False)
 
-    if plot_waveforms == True:
+    if plot_waveforms:
         print('Making waveforms plot.')
 
         fig, ax = plt.subplots(1,1,figsize = (6,2))
@@ -129,7 +131,9 @@ if __name__ == '__main__':
         fig.savefig('Figures/waveform_LED_stacked.pdf')
         plt.close()
 
-    if plot_cuts == True:
+    if plot_cuts:
         print('Plotting cut effects.')
         plot_cuts_quad()
-        
+
+    if plot_LED:
+        plot_LED_aqueduct_and_BV(coolwarm)
