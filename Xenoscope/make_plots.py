@@ -33,9 +33,39 @@ if __name__ == '__main__':
 
     if plot_properties == True:
         print('Plotting properties of sensors')
+
+        ## 6x6 ##
+        df_6x6 = pd.read_hdf('Data/6x6_characterisation.h5')
+        BVs_6x6 = pylars.analysis.breakdown.compute_BV_DCRds_results(df_6x6, 
+            plot = False)
+        plot_gain_v(df_6x6[df_6x6['V']< 56], coolwarm, 48, 56, '6x6_gain_v.pdf')
+        plot_bv_temp(BVs_6x6, 165, 215, '6x6_bv_temp.pdf')
+        plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
+                            'linear', coolwarm,
+                            '6x6_errorbars', errorbars = True)
+        plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
+                            'linear', coolwarm,
+                            '6x6_NOerrorbars', errorbars = False)
+        _df_6x6 = df_6x6[~(
+            ((df_6x6['Gain']>1.7e6) & (df_6x6['T'] == 200)) | 
+            ((df_6x6['Gain']>2.2e6) & (df_6x6['T'] == 190)))]
+        plot_parameter_vs_gain(_df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
+                            'linear', coolwarm,
+                            '6x6_errorbars', errorbars = True)
+        plot_parameter_vs_gain(df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
+                            'linear', coolwarm,
+                            '6x6_NOerrorbars', errorbars = False)
+        plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
+                            'linear', coolwarm,
+                            '6x6_errorbars', errorbars = True)
+        plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
+                            'linear', coolwarm,
+                            '6x6_NOerrorbars', errorbars = False)
+
         ## Quad ##
-        df_quad = pd.read_hdf('./Data/quad_characterisation.h5')
-        BVs_quad = pylars.analysis.breakdown.compute_BV_DCRds_results(df_quad, plot = False)
+        df_quad = pd.read_hdf('Data/quad_characterisation.h5')
+        BVs_quad = pylars.analysis.breakdown.compute_BV_DCRds_results(
+            df_quad, plot = False)
         plot_gain_v(df_quad, coolwarm, 48, 56, 'quad_gain_v.pdf')
         plot_bv_temp(BVs_quad, 165, 215, 'quad_bv_temp.pdf')
         plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
@@ -57,8 +87,9 @@ if __name__ == '__main__':
                             'linear', coolwarm,
                             'quad_NOerrorbars', errorbars = False)
         ## Quad ##
-        df_tile = pd.read_hdf('./Data/tile_characterisation.h5')
-        BVs_tile = pylars.analysis.breakdown.compute_BV_DCRds_results(df_quad, plot = False)
+        df_tile = pd.read_hdf('Data/tile_characterisation.h5')
+        BVs_tile = pylars.analysis.breakdown.compute_BV_DCRds_results(
+            df_quad, plot = False)
         plot_gain_v(df_tile, coolwarm, 48, 56, 'tile_gain_v.pdf')
         plot_bv_temp(BVs_tile, 165, 215, 'tile_bv_temp.pdf')
         plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 
@@ -100,6 +131,5 @@ if __name__ == '__main__':
 
     if plot_cuts == True:
         print('Plotting cut effects.')
-        plot_length_cut_line()
-        plot_length_cut_effect()
+        plot_cuts_quad()
         

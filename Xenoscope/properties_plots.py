@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 
 from pylars.plotting import *
+from pylars.utils.common import func_linear
 
 # Fit functions
 from scipy.optimize import curve_fit
@@ -45,20 +46,25 @@ def plot_gain_v(df, cmap, xmin, xmax, plotname):
     ax.set_ylabel('Gain')
     ax.legend()
     fig.savefig('Figures/' + plotname)
+    plt.close()
     
 def plot_bv_temp(BVs, tmin, tmax, plotname):
     fig, ax = plt.subplots(1,1, figsize = (5,3))
 
-    linres = stats.linregress(BVs['T'], BVs['BV'])
+    #linres = stats.linregress(BVs['T'], BVs['BV'])
+    par, cov = curve_fit(
+        func_linear, BVs['T'], BVs['BV'], sigma=1/BVs['BV_error']**2)
+
     _x = np.linspace(tmin,tmax, 2)
 
     ax.errorbar(BVs['T'], BVs['BV'], yerr=BVs['BV_error'], ls = '')
-    ax.plot(_x, linres.slope * _x + linres.intercept)
+    ax.plot(_x, func_linear(_x, *par), marker = '', ls = '-')
 
     ax.set_xlabel('Temperature [K]')
     ax.set_ylabel('Breakdown Voltage [V]')
     ax.set_xlim(tmin, tmax)
     fig.savefig('Figures/' + plotname)
+    plt.close()
 
     
 def plot_parameter_vs_gain(df,parameter, ylabel, yscale, cmap,
@@ -93,3 +99,4 @@ def plot_parameter_vs_gain(df,parameter, ylabel, yscale, cmap,
     ax.legend()
    
     fig.savefig(f'Figures/{plotlabel}_{parameter}_gain.pdf')
+    plt.close()
