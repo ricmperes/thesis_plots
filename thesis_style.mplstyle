@@ -98,7 +98,7 @@ legend.columnspacing: 0.8  # column separation
 ##########
 figure.figsize:     3.5, 2.72   # inches
 figure.facecolor:   white
-figure.dpi:         200
+figure.dpi:         80
 figure.constrained_layout.use: True    # When True, automatically make plot
                                         # elements fit on the figure
 #figure.constrained_layout.h_pad:  0.04167  # Padding around axes objects. Float representing
