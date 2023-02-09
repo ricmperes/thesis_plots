@@ -106,7 +106,8 @@ def plot_SPE_fit(AreaValues, WidthValues, A, mu, sigma, figax = None):
             histtype = 'step', label = 'Data in dark')
 
     ax.fill_between(_x, Gaussian(_x, A, mu, sigma), label = f'SPE fit')
-    ax.set_xlabel('PeakArea')
+    ax.set_xlabel('Area [integrated ADC counts]')
+    ax.set_ylabel('# events')
     ax.set_yscale('log')
 
     ax.set_ylim(0.5,9e3)
