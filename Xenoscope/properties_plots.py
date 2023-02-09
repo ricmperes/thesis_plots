@@ -76,7 +76,7 @@ def plot_bv_temp(BVs, tmin, tmax, plotname):
 def plot_parameter_vs_gain(df,parameter, ylabel, yscale, cmap,
                            plotlabel, errorbars:bool = True):
     temps = np.unique(df['T'])
-    fig, ax = plt.subplots(1,1,figsize = (5,5))
+    fig, ax = plt.subplots(1,1,figsize = (3.5,3.5))
     for i, t in enumerate(temps):
         _mask = df['T'] == t
         
