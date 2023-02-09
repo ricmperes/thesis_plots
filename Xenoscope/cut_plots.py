@@ -8,7 +8,7 @@ from scipy.optimize import curve_fit
 
 def plot_area_specturm(AreaValues, log = True, figax = None):
     if figax == None:
-        fig, ax = plt.subplots(1,1, figsize = (3,2))
+        fig, ax = plt.subplots(1,1, figsize = (6,2))
     else:
         fig, ax = figax
 
@@ -65,7 +65,7 @@ def plot_length_cut_effect(AreaValues, WidthValues, figax = None):
 def plot_DCR_steps(area_hist_x, DCR_values, DCR_der_x_points, 
                    DCR_der_y_points, min_area_x, figax = None):
     if figax == None:
-        fig, ax = plt.subplots(1,1, figsize = (6,4))
+        fig, ax = plt.subplots(1,1, figsize = (3,1.8))
     else:
         fig, ax = figax
 
@@ -95,7 +95,7 @@ def plot_DCR_steps(area_hist_x, DCR_values, DCR_der_x_points,
 
 def plot_SPE_fit(AreaValues, WidthValues, A, mu, sigma, figax = None):
     if figax == None:
-        fig, ax = plt.subplots(1,1, figsize = (6,4))
+        fig, ax = plt.subplots(1,1, figsize = (3,1.8))
     else:
         fig, ax = figax
     

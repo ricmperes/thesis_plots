@@ -30,8 +30,8 @@ coolwarm = ListedColormap(coolwarm)
 if __name__ == '__main__':
     plot_properties = False
     plot_waveforms = False
-    plot_cuts = False
-    plot_LED = True
+    plot_cuts = True
+    plot_LED = False
 
     if plot_properties:
         print('Plotting properties of sensors')
