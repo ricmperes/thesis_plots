@@ -1,0 +1,18 @@
+\begin{table}[h!]
+\centering
+\caption[Breakdown voltage measured in a quad.]{Breakdown voltage for a quad at different temperatures.}
+\label{tab:BV_xenoscope_quads}
+\begin{tabular}{lrrlrr}
+\toprule
+ & T & module & channel & BV & BV_error \\
+\midrule
+0 & 170.000000 & 0.000000 & wf0 & 46.169818 & 0.021210 \\
+1 & 175.000000 & 0.000000 & wf0 & 46.450089 & 0.028021 \\
+2 & 180.000000 & 0.000000 & wf0 & 46.820458 & 0.019104 \\
+3 & 185.000000 & 0.000000 & wf0 & 47.066138 & 0.021254 \\
+4 & 190.000000 & 0.000000 & wf0 & 47.277824 & 0.023103 \\
+5 & 195.000000 & 0.000000 & wf0 & 47.572632 & 0.018572 \\
+6 & 200.000000 & 0.000000 & wf0 & 47.815030 & 0.017866 \\
+\bottomrule
+\end{tabular}
+\end{table}

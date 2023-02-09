@@ -1,3 +1,31 @@
+import argparse
+
+parser = argparse.ArgumentParser(
+    description=('Redo Xenoscope plots.')
+)
+parser.add_argument('-p', '--properties',
+                    help='Make properties plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+parser.add_argument('-w', '--waveforms',
+                    help='Make waveforms plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+parser.add_argument('-c', '--cuts',
+                    help='Make cuts plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)                                        
+parser.add_argument('-l', '--LED',
+                    help='Make LED plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+
+args = parser.parse_args()
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -28,46 +56,55 @@ coolwarm[:,0:3] *= a
 coolwarm = ListedColormap(coolwarm)
 
 if __name__ == '__main__':
-    plot_properties = False
-    plot_waveforms = False
-    plot_cuts = True
-    plot_LED = False
+
+    plot_properties = args.properties
+    plot_waveforms = args.waveforms
+    plot_cuts = args.cuts
+    plot_LED = args.LED
 
     if plot_properties:
         print('Plotting properties of sensors')
 
-        ## 6x6 ##
-        df_6x6 = pd.read_hdf('Data/6x6_characterisation.h5')
-        BVs_6x6 = pylars.analysis.breakdown.compute_BV_DCRds_results(df_6x6, 
-            plot = False)
-        plot_gain_v(df_6x6[df_6x6['V']< 56], coolwarm, 48, 56, '6x6_gain_v.pdf')
-        plot_bv_temp(BVs_6x6, 165, 215, '6x6_bv_temp.pdf')
-        plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            '6x6_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            '6x6_NOerrorbars', errorbars = False)
-        _df_6x6 = df_6x6[~(
-            ((df_6x6['Gain']>1.7e6) & (df_6x6['T'] == 200)) | 
-            ((df_6x6['Gain']>2.2e6) & (df_6x6['T'] == 190)))]
-        plot_parameter_vs_gain(_df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            '6x6_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            '6x6_NOerrorbars', errorbars = False)
-        plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            '6x6_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            '6x6_NOerrorbars', errorbars = False)
+        # ## 6x6 ##
+        # df_6x6 = pd.read_hdf('Data/6x6_characterisation.h5')
+        # BVs_6x6 = pylars.analysis.breakdown.compute_BV_DCRds_results(df_6x6, 
+        #     plot = False)
+        # plot_gain_v(df_6x6[df_6x6['V']< 56], coolwarm, 48, 56, '6x6_gain_v.pdf')
+        # plot_bv_temp(BVs_6x6, 165, 215, '6x6_bv_temp.pdf')
+        # plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_6x6,'SPE_res', 'SPE resolution [%]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_NOerrorbars', errorbars = False)
+        # _df_6x6 = df_6x6[~(
+        #     ((df_6x6['Gain']>1.7e6) & (df_6x6['T'] == 200)) | 
+        #     ((df_6x6['Gain']>2.2e6) & (df_6x6['T'] == 190)))]
+        # plot_parameter_vs_gain(_df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_6x6,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_NOerrorbars', errorbars = False)
+        # plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_6x6,'CTP', 'CTP [%]', 
+        #                     'linear', coolwarm,
+        #                     '6x6_NOerrorbars', errorbars = False)
 
         ## Quad ##
+        print('Plotting quad')
         df_quad = pd.read_hdf('Data/quad_characterisation.h5')
         BVs_quad = pylars.analysis.breakdown.compute_BV_DCRds_results(
             df_quad, plot = False)
+        BVs_quad.style.to_latex('BVs_quad.txt',
+                                label = 'tab:BV_xenoscope_quads', 
+                                caption = ('Breakdown voltage for a quad at different temperatures.',
+                                           'Breakdown voltage measured in a quad.'),
+                                hrules = True,
+                                position_float = 'centering',
+                                position = 'h!')
         plot_gain_v(df_quad, coolwarm, 48, 56, 'quad_gain_v.pdf')
         plot_bv_temp(BVs_quad, 165, 215, 'quad_bv_temp.pdf')
         plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
@@ -88,10 +125,18 @@ if __name__ == '__main__':
         plot_parameter_vs_gain(df_quad,'CTP', 'CTP [%]', 
                             'linear', coolwarm,
                             'quad_NOerrorbars', errorbars = False)
-        ## Quad ##
+        ## Tile ##
+        print('Plotting tile')
         df_tile = pd.read_hdf('Data/tile_characterisation.h5')
         BVs_tile = pylars.analysis.breakdown.compute_BV_DCRds_results(
-            df_quad, plot = False)
+            df_tile, plot = False)
+        BVs_tile.style.to_latex('BVs_tile.txt',
+                                label = 'tab:BV_xenoscope_quads', 
+                                caption = ('Breakdown voltage for a tile at different temperatures.',
+                                           'Breakdown voltage measured for a tile.'),
+                                hrules = True,
+                                position_float = 'centering',
+                                position = 'h!')
         plot_gain_v(df_tile, coolwarm, 48, 56, 'tile_gain_v.pdf')
         plot_bv_temp(BVs_tile, 165, 215, 'tile_bv_temp.pdf')
         plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 

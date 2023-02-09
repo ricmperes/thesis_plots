@@ -24,7 +24,7 @@ def CTP_fit_func(x, a,b,c):
 
 def plot_gain_v(df, cmap, xmin, xmax, plotname):
     temps = np.unique(df['T'])
-    fig, ax = plt.subplots(1,1, figsize = (5,5))
+    fig, ax = plt.subplots(1,1, figsize = (3.5,3.5))
 
     _x = np.linspace(xmin,xmax, 100)
 
@@ -42,6 +42,8 @@ def plot_gain_v(df, cmap, xmin, xmax, plotname):
                c = cmap(i/len(temps)))
 
     ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0), useMathText=True)
+    ax.set_ylim(0,6.2e6)
+    ax.set_xlim(48,56)
     ax.set_xlabel('Bias voltage [V]')
     ax.set_ylabel('Gain')
     ax.legend()
@@ -49,11 +51,15 @@ def plot_gain_v(df, cmap, xmin, xmax, plotname):
     plt.close()
     
 def plot_bv_temp(BVs, tmin, tmax, plotname):
-    fig, ax = plt.subplots(1,1, figsize = (5,3))
+    fig, ax = plt.subplots(1,1, figsize = (4,2.5))
 
     #linres = stats.linregress(BVs['T'], BVs['BV'])
     par, cov = curve_fit(
         func_linear, BVs['T'], BVs['BV'], sigma=1/BVs['BV_error']**2)
+    err = np.sqrt(np.diag(cov))
+
+    print(f'a: {par[0]} +- {err[0]}')
+    print(f'b: {par[1]} +- {err[1]}')
 
     _x = np.linspace(tmin,tmax, 2)
 
