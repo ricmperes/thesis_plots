@@ -95,7 +95,7 @@ def plot_DCR_steps(area_hist_x, DCR_values, DCR_der_x_points,
 
 def plot_SPE_fit(AreaValues, WidthValues, A, mu, sigma, figax = None):
     if figax == None:
-        fig, ax = plt.subplots(1,1, figsize = (3,1.8))
+        fig, ax = plt.subplots(1,1, figsize = (4,2.4))
     else:
         fig, ax = figax
     
@@ -106,6 +106,11 @@ def plot_SPE_fit(AreaValues, WidthValues, A, mu, sigma, figax = None):
             histtype = 'step', label = 'Data in dark')
 
     ax.fill_between(_x, Gaussian(_x, A, mu, sigma), label = f'SPE fit')
+    [ax.axvline(mu*i*1.01, ls = '--', 
+                alpha = 0.5, lw =1, 
+                color = plt.rcParams['axes.prop_cycle'].by_key()['color'][1]) 
+        for i in range(1,5)]
+
     ax.set_xlabel('Area [integrated ADC counts]')
     ax.set_ylabel('# events')
     ax.set_yscale('log')
@@ -120,7 +125,7 @@ def plot_SPE_fit(AreaValues, WidthValues, A, mu, sigma, figax = None):
                        edgecolor='none', linewidth=0, label = text2)
     ax.add_patch(extra1)
     ax.add_patch(extra2)
-    ax.legend()
+    ax.legend(loc = 'upper right')
 
     fig.savefig('Figures/quad_SPE_fit.pdf')
     plt.close()
@@ -129,8 +134,8 @@ def plot_cuts_quad():
     """All in one solution: cuts, SPE, DCR steps.
     """
 
-    AreaValues = np.load('./Data/quad_AreaValues.npy')
-    WidthValues = np.load('./Data/quad_WidthValues.npy')
+    AreaValues = np.load('./Data/detail_study/quad_AreaValues.npy')
+    WidthValues = np.load('./Data/detail_study/quad_WidthValues.npy')
 
     ## Area spectrum 
     plot_area_specturm(AreaValues, log = True)

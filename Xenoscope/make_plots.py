@@ -23,6 +23,16 @@ parser.add_argument('-l', '--LED',
                     nargs='?', const=True,
                     default= False,
                     required=False)
+parser.add_argument('-a', '--air',
+                    help='Make plots of Top Array in air (Dec22).',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+parser.add_argument('-t', '--total',
+                    help='Make plots of all the 50 quads properties.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)                    
 
 args = parser.parse_args()
 
@@ -32,12 +42,13 @@ import pandas as pd
 import scipy.stats as stats
 
 import pylars
-from pylars.plotting import *
 
 from properties_plots import *
 from waveform_plots import *
 from cut_plots import *
 from LED_ON_plots import *
+from air_plots import *
+from all_quads_plots import *
 
 # Load my style ;)
 
@@ -55,12 +66,18 @@ coolwarm = plt.cm.coolwarm(np.arange(plt.cm.coolwarm.N))
 coolwarm[:,0:3] *= a 
 coolwarm = ListedColormap(coolwarm)
 
+summer = plt.cm.summer(np.arange(plt.cm.summer.N))
+summer[:,0:3] *= a 
+summer = ListedColormap(summer)
+
 if __name__ == '__main__':
 
     plot_properties = args.properties
     plot_waveforms = args.waveforms
     plot_cuts = args.cuts
     plot_LED = args.LED
+    plot_air = args.air
+    plot_total = args.total
 
     if plot_properties:
         print('Plotting properties of sensors')
@@ -95,7 +112,7 @@ if __name__ == '__main__':
 
         ## Quad ##
         print('Plotting quad')
-        df_quad = pd.read_hdf('Data/quad_characterisation.h5')
+        df_quad = pd.read_hdf('Data/detail_study/quad_characterisation.h5')
         BVs_quad = pylars.analysis.breakdown.compute_BV_DCRds_results(
             df_quad, plot = False)
         BVs_quad.style.to_latex('BVs_quad.txt',
@@ -107,27 +124,27 @@ if __name__ == '__main__':
                                 position = 'h!')
         plot_gain_v(df_quad, coolwarm, 48, 56, 'quad_gain_v.pdf')
         plot_bv_temp(BVs_quad, 165, 215, 'quad_bv_temp.pdf')
-        plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            'quad_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            'quad_NOerrorbars', errorbars = False)
-        plot_parameter_vs_gain(df_quad,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            'quad_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_quad,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            'quad_NOerrorbars', errorbars = False)
-        plot_parameter_vs_gain(df_quad,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            'quad_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_quad,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            'quad_NOerrorbars', errorbars = False)
+        #plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
+        #                    'linear', coolwarm,
+        #                    'quad_errorbars', errorbars = True)
+        #plot_parameter_vs_gain(df_quad,'SPE_res', 'SPE resolution [%]', 
+        #                    'linear', coolwarm,
+        #                    'quad_NOerrorbars', errorbars = False)
+        #plot_parameter_vs_gain(df_quad,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                    'linear', coolwarm,
+        #                    'quad_errorbars', errorbars = True)
+        #plot_parameter_vs_gain(df_quad,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                    'linear', coolwarm,
+        #                    'quad_NOerrorbars', errorbars = False)
+        #plot_parameter_vs_gain(df_quad,'CTP', 'CTP [%]', 
+        #                    'linear', coolwarm,
+        #                    'quad_errorbars', errorbars = True)
+        #plot_parameter_vs_gain(df_quad,'CTP', 'CTP [%]', 
+        #                    'linear', coolwarm,
+        #                    'quad_NOerrorbars', errorbars = False)
         ## Tile ##
         print('Plotting tile')
-        df_tile = pd.read_hdf('Data/tile_characterisation.h5')
+        df_tile = pd.read_hdf('Data/detail_study/tile_characterisation.h5')
         BVs_tile = pylars.analysis.breakdown.compute_BV_DCRds_results(
             df_tile, plot = False)
         BVs_tile.style.to_latex('BVs_tile.txt',
@@ -139,24 +156,39 @@ if __name__ == '__main__':
                                 position = 'h!')
         plot_gain_v(df_tile, coolwarm, 48, 56, 'tile_gain_v.pdf')
         plot_bv_temp(BVs_tile, 165, 215, 'tile_bv_temp.pdf')
-        plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            'tile_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 
-                            'linear', coolwarm,
-                            'tile_NOerrorbars', errorbars = False)
-        plot_parameter_vs_gain(df_tile,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            'tile_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_tile,'DCR', 'DCR [Hz/mm$^2$]', 
-                            'linear', coolwarm,
-                            'tile_NOerrorbars', errorbars = False)
-        plot_parameter_vs_gain(df_tile,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            'tile_errorbars', errorbars = True)
-        plot_parameter_vs_gain(df_tile,'CTP', 'CTP [%]', 
-                            'linear', coolwarm,
-                            'tile_NOerrorbars', errorbars = False)
+
+        df_tile = df_tile[df_tile['T'] <= 200]
+        #plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 
+        #                    'linear', coolwarm,
+        #                    'tile_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_tile,'SPE_res', 'SPE resolution [%]', 
+        #                     'linear', coolwarm,
+        #                     'tile_NOerrorbars', errorbars = False)
+        #plot_parameter_vs_gain(df_tile,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                    'linear', coolwarm,
+        #                    'tile_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_tile,'DCR', 'DCR [Hz/mm$^2$]', 
+        #                     'linear', coolwarm,
+        #                     'tile_NOerrorbars', errorbars = False)
+        #plot_parameter_vs_gain(df_tile,'CTP', 'CTP [%]', 
+        #                    'linear', coolwarm,
+        #                    'tile_errorbars', errorbars = True)
+        # plot_parameter_vs_gain(df_tile,'CTP', 'CTP [%]', 
+        #                     'linear', coolwarm,
+        #                     'tile_NOerrorbars', errorbars = False)
+
+        plot_parameter_vs_gain_both(df_quad, df_tile ,
+                                'SPE_res', 'SPE resolution [%]', 
+                                'linear', coolwarm, summer,
+                                'both', errorbars = True)
+        plot_parameter_vs_gain_both(df_quad, df_tile ,
+                                'DCR', 'DCR [Hz/mm$^2$]', 
+                                'linear', coolwarm, summer,
+                                'both', errorbars = True)
+        plot_parameter_vs_gain_both(df_quad, df_tile ,
+                                'CTP', 'CTP [%]', 
+                                'linear', coolwarm, summer,
+                                'both', errorbars = True)
 
     if plot_waveforms:
         print('Making waveforms plot.')
@@ -181,4 +213,20 @@ if __name__ == '__main__':
         plot_cuts_quad()
 
     if plot_LED:
+        print('Plotting LED data.')
         plot_LED_aqueduct_and_BV(coolwarm)
+
+    if plot_air:
+        print('Plotting Xenoscope air data.')
+        plot_BV_in_air()
+        plot_light_levels()
+    
+    if plot_total:
+        print('Plotting 50 quad distributions.')
+        plot_BV_all_quads_hybrid()
+        
+        plot_prop_all_quads_hybrid('Gain', ylabel = 'Gain')
+        plot_prop_all_quads_hybrid('DCR', ylabel = 'DCR [Hz/mm$^2$]')
+        plot_prop_all_quads_hybrid('CTP', ylabel = 'CTP [%]')
+        plot_prop_all_quads_hybrid('SPE_res', ylabel = 'SPE resolution [%]')
+        

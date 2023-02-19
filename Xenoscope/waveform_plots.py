@@ -20,7 +20,7 @@ def plot_wf_PEs(figax = None):
     else:
         fig, ax = figax
 
-    with open('./Data/waveform_123pe.json', 'r') as json_file:
+    with open('./Data/waveforms/waveform_123pe.json', 'r') as json_file:
         wf_dict = json.load(json_file)
 
     pos_pe1 = wf_dict['1']['pos']
@@ -62,7 +62,7 @@ def plot_wf_LED(figax = None):
     else:
         fig, ax = figax
 
-    with open('./Data/waveform_LED.json', 'r') as json_file:
+    with open('./Data/waveforms/waveform_LED.json', 'r') as json_file:
         wf_dict = json.load(json_file)
 
     pos_LED = wf_dict['pos']
@@ -92,7 +92,7 @@ def plot_wf_noise(figax = None):
     else:
         fig, ax = figax
 
-    with open('./Data/waveform_LED.json', 'r') as json_file:
+    with open('./Data/waveforms/waveform_LED.json', 'r') as json_file:
         wf_dict = json.load(json_file)
 
     pos_LED = wf_dict['pos']
@@ -119,7 +119,7 @@ def plot_wf_LED_stacked(n_waveforms = 200, LED_pos = 300, figax = None):
 
     if n_waveforms > 500:
         raise AttributeError('Only 500 waveforms available on the file cut.')
-    ch = np.load('./Data/LED_array_500_wfs.npy')
+    ch = np.load('./Data/waveforms/LED_array_500_wfs.npy')
 
     for i in tqdm(range(n_waveforms)):
         ax.plot(np.arange(LED_pos-200,LED_pos+300), 

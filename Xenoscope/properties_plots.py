@@ -98,11 +98,101 @@ def plot_parameter_vs_gain(df,parameter, ylabel, yscale, cmap,
 
     ax.ticklabel_format(style='sci', axis='x', 
                             scilimits=(0,0), useMathText=True)
+    ax.set_xlim(0,6.05e6)
     
+    if parameter == 'SPE_res':
+        ax.set_ylim(0,30)
+    elif parameter == 'DCR':
+        ax.set_ylim(0,16.9)
+    elif parameter == 'CTP':
+        ax.set_ylim(0,50)
+
     ax.set_yscale(yscale)
     ax.set_xlabel('Gain')
     ax.set_ylabel(ylabel)
     ax.legend()
+   
+    fig.savefig(f'Figures/{plotlabel}_{parameter}_gain.pdf')
+    plt.close()
+
+
+def plot_parameter_vs_gain_both(df_quad, df_tile ,
+                                parameter, ylabel, 
+                                yscale, cmap_quad, cmap_tile,
+                                plotlabel, errorbars:bool = True):
+    temps_quad = np.unique(df_quad['T'])
+    temps_tile = np.unique(df_tile['T'])
+    fig, ax = plt.subplots(1,1,figsize = (7,3.5))
+    quad_lines_list = []
+    tile_lines_list = []
+
+    #quad points
+    for i, t in enumerate(temps_quad):
+        _mask = df_quad['T'] == t
+        
+        if errorbars:
+            p = ax.errorbar(df_quad[_mask]['Gain'], 
+                        df_quad[_mask][parameter], 
+                        yerr = df_quad[_mask][f'{parameter}_error'],
+                        marker = '.', ls ='', capsize = 3,
+                        label = f'{t:.0f} K',
+                        c = cmap_quad(i/len(temps_quad)))
+       
+        else:
+            p = ax.plot(df_quad[_mask]['Gain'], 
+                    df_quad[_mask][parameter], 
+                    marker = 'o', ls ='',
+                    label = f'{t:.0f} K',
+                    c = cmap_quad(i/len(temps_quad)))
+            p = p[0]
+        
+        quad_lines_list.append(p)
+        
+    #tile points
+    for i, t in enumerate(temps_tile):
+        _mask = df_tile['T'] == t
+        
+        if errorbars:
+            p = ax.errorbar(df_tile[_mask]['Gain'], 
+                        df_tile[_mask][parameter], 
+                        yerr = df_tile[_mask][f'{parameter}_error'],
+                        marker = '.', ls ='', capsize = 3,
+                        label = f'{t:.0f} K',
+                        c = cmap_tile(1 - i/len(temps_tile)))
+       
+        else:
+            p = ax.plot(df_tile[_mask]['Gain'], 
+                    df_tile[_mask][parameter], 
+                    marker = 'o', ls ='',
+                    label = f'{t:.0f} K',
+                    c = cmap_tile(1 - i/len(temps_tile)))
+            p = p[0]
+        tile_lines_list.append(p)
+        
+
+    ax.ticklabel_format(style='sci', axis='x', 
+                            scilimits=(0,0), useMathText=True)
+    ax.set_xlim(0,6.05e6)
+    
+    if parameter == 'SPE_res':
+        ax.set_ylim(0,30)
+    elif parameter == 'DCR':
+        ax.set_ylim(0,16.9)
+    elif parameter == 'CTP':
+        ax.set_ylim(0,50)
+
+    ax.set_yscale(yscale)
+    ax.set_xlabel('Gain')
+    ax.set_ylabel(ylabel)
+    leg1 = ax.legend(handles = quad_lines_list, 
+                     loc = 'upper left', 
+                     bbox_to_anchor=(1.04, 1), borderaxespad=0,
+                     title = 'Quad')
+    ax.add_artist(leg1)
+    ax.legend(handles = tile_lines_list, 
+              loc = 'lower left',
+              bbox_to_anchor=(1.04, 0), borderaxespad=0,
+              title = 'Tile')
    
     fig.savefig(f'Figures/{plotlabel}_{parameter}_gain.pdf')
     plt.close()
