@@ -32,14 +32,18 @@ parser.add_argument('-t', '--total',
                     help='Make plots of all the 50 quads properties.',
                     nargs='?', const=True,
                     default= False,
-                    required=False)                    
+                    required=False)
+parser.add_argument('-s', '--spe',
+                    help='Make plots of the spe comparison study.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)                      
 
 args = parser.parse_args()
 
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import scipy.stats as stats
 
 import pylars
 
@@ -49,6 +53,7 @@ from cut_plots import *
 from LED_ON_plots import *
 from air_plots import *
 from all_quads_plots import *
+from SPE_res_comparision_plots import *
 
 # Load my style ;)
 
@@ -78,6 +83,7 @@ if __name__ == '__main__':
     plot_LED = args.LED
     plot_air = args.air
     plot_total = args.total
+    plot_spe_compare = args.spe
 
     if plot_properties:
         print('Plotting properties of sensors')
@@ -186,6 +192,10 @@ if __name__ == '__main__':
                                 'linear', coolwarm, summer,
                                 'both', errorbars = True)
         plot_parameter_vs_gain_both(df_quad, df_tile ,
+                                'DCR', 'DCR [Hz/mm$^2$]', 
+                                'log', coolwarm, summer,
+                                'both', errorbars = True)
+        plot_parameter_vs_gain_both(df_quad, df_tile ,
                                 'CTP', 'CTP [%]', 
                                 'linear', coolwarm, summer,
                                 'both', errorbars = True)
@@ -230,3 +240,6 @@ if __name__ == '__main__':
         plot_prop_all_quads_hybrid('CTP', ylabel = 'CTP [%]')
         plot_prop_all_quads_hybrid('SPE_res', ylabel = 'SPE resolution [%]')
         
+    if plot_spe_compare:
+        plot_PMT_SiPM_dif()
+        plot_PMT_SiPM_spectrums()

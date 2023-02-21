@@ -178,6 +178,8 @@ def plot_parameter_vs_gain_both(df_quad, df_tile ,
         ax.set_ylim(0,30)
     elif parameter == 'DCR':
         ax.set_ylim(0,16.9)
+        if yscale=='log':
+            ax.set_ylim(0.1,20)
     elif parameter == 'CTP':
         ax.set_ylim(0,50)
 
@@ -194,5 +196,9 @@ def plot_parameter_vs_gain_both(df_quad, df_tile ,
               bbox_to_anchor=(1.04, 0), borderaxespad=0,
               title = 'Tile')
    
-    fig.savefig(f'Figures/{plotlabel}_{parameter}_gain.pdf')
+    if yscale != 'linear':
+        fig.savefig(f'Figures/{plotlabel}_{parameter}_gain_{yscale}.pdf')    
+    else:
+        fig.savefig(f'Figures/{plotlabel}_{parameter}_gain.pdf')
+    
     plt.close()
