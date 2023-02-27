@@ -19,7 +19,7 @@ def plot_BV_in_air():
 
     bvs = []
     bvs_err = []
-    fig, axs = plt.subplots(4,3, figsize = (8,10))
+    fig, axs = plt.subplots(4,3, figsize = (7.5,10.5))
     axs = axs.flatten()
     for i, ch in tqdm(enumerate(chns), total = len(chns)):  
         axs[i].errorbar(df['V_bias'], df[f'ch{ch}_amplitude'], 
@@ -93,7 +93,7 @@ def plot_light_levels():
 
     chns = np.sort(np.unique(files_df['ch_n']))
 
-    fig, axs = plt.subplots(6,2, figsize = (8,12))
+    fig, axs = plt.subplots(4,3, figsize = (7.5,10.5))
     axs = axs.flatten()
     for i, _ch in tqdm(enumerate(chns), total = len(chns)):
         mask = (files_df['ch_n'] == _ch)

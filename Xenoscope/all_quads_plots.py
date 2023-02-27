@@ -69,6 +69,10 @@ def plot_BV_all_quads_hybrid():
         med, 1/all_runs['BV@190K_err'][indices]**2)
     med_err = 1.2533 * wstd/np.sqrt(len(all_runs))
 
+    print(f'BV: {med} +- {med_err}')
+    print(f"std: {np.std(all_runs['BV@190K'][indices])}")
+    print(f'wstd: {wstd}')
+
     axs[0].errorbar(all_runs['MPPC#'], all_runs['BV@190K'], 
                 yerr= all_runs['BV@190K_err'], 
                 ls = '',marker = '.', capsize = 3)
@@ -185,6 +189,9 @@ def plot_prop_all_quads_hybrid(prop, ylabel):
 
     med_err = 1.2533 * wstd/np.sqrt(len(all_runs))
 
+    print(f'{prop}\nmed: {med}+-{med_err}\n')
+    print(f"std: {np.std(all_runs[f'{prop}@190K'][indices])}\n")
+    print(f'wstd: {wstd}')
 
     if prop == 'SPE_res':
         ymin = 2.5
