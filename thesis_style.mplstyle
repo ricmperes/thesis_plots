@@ -110,7 +110,7 @@ figure.constrained_layout.use: True    # When True, automatically make plot
 ##########
 # IMAGES #
 ##########
-image.cmap:     viridis
+image.cmap:     coolwarm
 
 
 ##################

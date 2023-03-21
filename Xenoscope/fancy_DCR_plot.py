@@ -76,8 +76,9 @@ def plot_DCR_hitmap(df, ymin = 0.1e6, ymax = 6e6, yvar = 'Gain',
                 c = 'white',marker = 'x', zorder = 1,
                 alpha = 0.9,# fc='none', ec='white', 
                 s = 20, label = 'Data measured')
-    pmesh = ax.pcolormesh(_tt_grid, _gg_grid, _zz_grid, cmap='coolwarm', 
-                        norm=LogNorm(), zorder = -1)
+    pmesh = ax.pcolormesh(_tt_grid, _gg_grid, _zz_grid, 
+                          cmap='coolwarm', 
+                          norm=LogNorm(), zorder = -1)
 
     contours = ax.contour(_tt_grid, _gg_grid, _zz_grid, 
                         [0.1,0.5,1,2,5,10,20], alpha = 0.9,
