@@ -37,7 +37,12 @@ parser.add_argument('-s', '--spe',
                     help='Make plots of the spe comparison study.',
                     nargs='?', const=True,
                     default= False,
-                    required=False)                      
+                    required=False)    
+parser.add_argument('-xm', '--xenonmass',
+                    help='Make plot of the xenon mass pressure in bottles.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)                       
 
 args = parser.parse_args()
 
@@ -54,6 +59,7 @@ from LED_ON_plots import *
 from air_plots import *
 from all_quads_plots import *
 from SPE_res_comparision_plots import *
+from Xe_mass import make_xe_mass_plot
 
 # Load my style ;)
 
@@ -84,6 +90,7 @@ if __name__ == '__main__':
     plot_air = args.air
     plot_total = args.total
     plot_spe_compare = args.spe
+    plot_xe_mass = args.xenonmass
 
     if plot_properties:
         print('Plotting properties of sensors')
@@ -243,3 +250,6 @@ if __name__ == '__main__':
     if plot_spe_compare:
         plot_PMT_SiPM_dif()
         plot_PMT_SiPM_spectrums()
+
+    if plot_xe_mass:
+        make_xe_mass_plot()
