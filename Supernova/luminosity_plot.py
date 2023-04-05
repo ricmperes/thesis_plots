@@ -76,11 +76,11 @@ def plot_luminosity_curve():
     axs[2].set_ylim(0,25*1e51)
 
     axs[3].set_xlim(0,0.05)
-    axs[3].set_ylim(2.5,18)
+    axs[3].set_ylim(2.5,20)
     axs[4].set_xlim(0.05,1)
-    axs[4].set_ylim(2.5,18)
+    axs[4].set_ylim(2.5,20)
     axs[5].set_xlim(1,8)
-    axs[5].set_ylim(2.5,18)
+    axs[5].set_ylim(2.5,20)
 
     axs[2].legend()
     
