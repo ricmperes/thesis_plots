@@ -11,7 +11,7 @@ coolwarm[:,0:3] *= a
 coolwarm = ListedColormap(coolwarm)
 
 def plot_rates_energy():
-    diff_rate_energy = pd.read_csv('diff_rate_energy.csv')
+    diff_rate_energy = pd.read_csv('Data/diff_rate_energy.csv')
     fig, ax = plt.subplots(figsize = (4,2.7))
 
     ax.plot(diff_rate_energy.Er, diff_rate_energy.Total, 
@@ -33,7 +33,7 @@ def plot_rates_energy():
     fig.savefig('Figures/diff_rate_energy.pdf')
 
 def plot_rates_time():
-    diff_rate_time = pd.read_csv('diff_rate_time.csv')
+    diff_rate_time = pd.read_csv('Data/diff_rate_time.csv')
     fig, ax = plt.subplots(figsize = (4,2.7))
 
     ax.plot(diff_rate_time.time, diff_rate_time.Total, 
