@@ -14,7 +14,7 @@ coolwarm[:,0:3] *= a
 coolwarm = ListedColormap(coolwarm)
 
 def plot_formfactor():
-    fig, ax = plt.subplots(1,1,figsize = (4.5,3))
+    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
     
     xe_isotopes = ['Xe129','Xe131','Xe132','Xe134','Xe136',]
     for xe in xe_isotopes:
@@ -38,7 +38,7 @@ def plot_cevns_matrix():
     singleXe = Target(ATOM_TABLE['Xe131'], pure=True)
     crosssec = singleXe.nN_cross_section(neutrino_en, recoil_en)
 
-    fig, ax = plt.subplots(1,1,figsize = (4.5,3))
+    fig, ax = plt.subplots(1,1,figsize = (3.8,2.53))
     matrix = ax.pcolormesh(neutrino_en.value, recoil_en.value, 
                            crosssec.to(u.cm**2/u.keV), norm = 'linear', 
                     vmin = 0, cmap=coolwarm) #, norm=LogNorm())
