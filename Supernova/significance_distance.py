@@ -17,7 +17,8 @@ Xe_dens = 2.8568 #t/m^3
 @np.vectorize
 def sn_n_events(d,m): #integrated in time
     d_set_sn_point_10kpc = 10
-    return 6 * 8 / (np.pi*0.6**2*1.5*Xe_dens) * d_set_sn_point_10kpc**2/d**2 *m
+    n_events_base = 108
+    return n_events_base / (np.pi*0.66**2*1.5*Xe_dens) * d_set_sn_point_10kpc**2/d**2 *m
 
 @np.vectorize
 def Z0(n,b):
@@ -37,7 +38,7 @@ def bkg_rate(m: float, scale_by = 'Area'):
     A_new = np.pi * (m/(2*np.pi*Xe_dens))**(2/3)
     V_nT = 2*np.pi*0.75**3
     V_new = m/Xe_dens
-    XenT_bkg = 2 *8 #integrated in 8 s, per tonne
+    XenT_bkg = 2 *7 #integrated in 7 s, per tonne
     if scale_by == 'Volume':
         return XenT_bkg * V_new/V_nT
     else:
