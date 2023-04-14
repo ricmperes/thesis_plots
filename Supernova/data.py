@@ -32,25 +32,26 @@ def plot_s2rate():
 
     fig.savefig('Figures/s2_rate.pdf')
 
-def plot_area_width():
-    hist2d_data = np.load('Data/data_hist2d.npy', allow_pickle=True)
-    hist2d_sn = np.load('Data/sn_hist2d.npy', allow_pickle=True)
-
-    points_data = np.ma.masked_where(hist2d_data[0] == 0, hist2d_data[0])
-    points_sn = np.ma.masked_where(hist2d_sn[0] == 0, hist2d_sn[0])
-
-    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
-
-    ax.pcolormesh(hist2d_data[1],hist2d_data[2],points_data, alpha = 0.4, 
-                  cmap = summer)
-    ax.pcolormesh(hist2d_sn[1],hist2d_sn[2],points_sn, alpha = 1, 
-                  cmap = coolwarm)
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-    ax.set_xlabel('S2 area [pe]')
-    ax.set_ylabel('S2 width [ns]')
-
-    fig.savefig('Figures/sn_area_width.png')
+#def plot_area_width(): # For some reason not working properly! 
+# Axis are stretched
+#    hist2d_data = np.load('Data/data_hist2d.npy', allow_pickle=True)
+#    hist2d_sn = np.load('Data/sn_hist2d.npy', allow_pickle=True)
+#
+#    points_data = np.ma.masked_where(hist2d_data[0] == 0, hist2d_data[0])
+#    points_sn = np.ma.masked_where(hist2d_sn[0] == 0, hist2d_sn[0])
+#
+#    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
+#
+#    ax.pcolormesh(hist2d_data[1],hist2d_data[2],points_data, alpha = 0.4, 
+#                  cmap = summer)
+#    ax.pcolormesh(hist2d_sn[1],hist2d_sn[2],points_sn, alpha = 1, 
+#                  cmap = coolwarm)
+#    ax.set_yscale('log')
+#    ax.set_xscale('log')
+#    ax.set_xlabel('S2 area [pe]')
+#    ax.set_ylabel('S2 width [ns]')
+#
+#    fig.savefig('Figures/sn_area_width.png')
     
 def plot_sign_bkg_rates():
     no_cuts = np.loadtxt(
