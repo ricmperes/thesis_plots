@@ -1,11 +1,34 @@
+import argparse
+
+parser = argparse.ArgumentParser(
+    description=('Redo Xenoscope plots.')
+)
+parser.add_argument('-l', '--limits',
+                    help='Make limits plot.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+parser.add_argument('-p', '--photon',
+                    help='Make form factor and cevns matrix plot.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+parser.add_argument('-a', '--all',
+                    help='Make all plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+
+
+
+args = parser.parse_args()
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-import scipy.interpolate as itp
-from matplotlib.patches import Rectangle
 
 from upper_limits import load_files_SI, make_plot_SI
+from photon_absorption import plot_photon_absorption
 # Load my style ;)
 
 plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
@@ -28,5 +51,14 @@ summer[:,0:3] *= a
 summer = ListedColormap(summer)
 
 if __name__ == '__main__':
-    SI_limits = load_files_SI()
-    make_plot_SI(SI_limits)
+    if args.all:
+        plot_limits = plot_photon = True
+    else:
+        plot_limits = args.limits
+        plot_photon = args.photon
+    
+    if plot_limits:
+        SI_limits = load_files_SI()
+        make_plot_SI(SI_limits)
+    if plot_photon:
+        plot_photon_absorption()
