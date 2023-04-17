@@ -13,6 +13,12 @@ parser.add_argument('-p', '--photon',
                     nargs='?', const=True,
                     default= False,
                     required=False)
+parser.add_argument('-wr', '--wrates',
+                    help='WIMP rates.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
+
 parser.add_argument('-a', '--all',
                     help='Make all plots.',
                     nargs='?', const=True,
@@ -29,6 +35,7 @@ import numpy as np
 
 from upper_limits import load_files_SI, make_plot_SI
 from photon_absorption import plot_photon_absorption
+from wimprates_plots import plot_wimp_SI_rates
 # Load my style ;)
 
 plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
@@ -56,9 +63,13 @@ if __name__ == '__main__':
     else:
         plot_limits = args.limits
         plot_photon = args.photon
+        plot_wimprates = args.wrates
     
     if plot_limits:
         SI_limits = load_files_SI()
         make_plot_SI(SI_limits)
     if plot_photon:
         plot_photon_absorption()
+
+    if plot_wimprates:
+        plot_wimp_SI_rates()
