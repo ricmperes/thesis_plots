@@ -18,14 +18,17 @@ parser.add_argument('-wr', '--wrates',
                     nargs='?', const=True,
                     default= False,
                     required=False)
+parser.add_argument('-y', '--yields',
+                    help='ER and NR yields.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
 
 parser.add_argument('-a', '--all',
                     help='Make all plots.',
                     nargs='?', const=True,
                     default= False,
                     required=False)
-
-
 
 args = parser.parse_args()
 
@@ -36,6 +39,7 @@ import numpy as np
 from upper_limits import load_files_SI, make_plot_SI
 from photon_absorption import plot_photon_absorption
 from wimprates_plots import plot_wimp_SI_rates
+from yields import yields_plot
 # Load my style ;)
 
 plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
@@ -64,7 +68,8 @@ if __name__ == '__main__':
         plot_limits = args.limits
         plot_photon = args.photon
         plot_wimprates = args.wrates
-    
+        plot_yields = args.yields
+
     if plot_limits:
         SI_limits = load_files_SI()
         make_plot_SI(SI_limits)
@@ -73,3 +78,6 @@ if __name__ == '__main__':
 
     if plot_wimprates:
         plot_wimp_SI_rates()
+    
+    if plot_yields:
+        yields_plot()
