@@ -23,7 +23,7 @@ def plot_photon_absorption():
         label = 'Pair production in electron field')
 
     ax.set_xlabel('Photon energy [keV]')
-    ax.set_ylabel('Absorptoin coefficient [cm$^2$/g]')
+    ax.set_ylabel('Absorption coefficient [cm$^2$/g]')
     ax.set_xlim(1,1e5)
     ax.set_ylim(1e-4,1e5)
     ax.set_xscale('log')
