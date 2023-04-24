@@ -19,17 +19,17 @@ def plot_luminosity_curve():
             m27.time, 
             m27.luminosity[Flavor.NU_E], 
             label=Flavor.NU_E.to_tex(),
-            color = 'C0')
+            color = 'C1')
         axs[ax_i].plot(
             m27.time, 
             m27.luminosity[Flavor.NU_E_BAR], 
             label=Flavor.NU_E_BAR.to_tex(),
-            color = 'C1')
+            color = 'C2')
         axs[ax_i].plot(
             m27.time, 
             (m27.luminosity[Flavor.NU_X] + m27.luminosity[Flavor.NU_X_BAR]), 
             label=f'{Flavor.NU_X.to_tex()} + {Flavor.NU_X_BAR.to_tex()}',
-            color = 'C2')
+            color = 'C3')
         axs[ax_i].plot(
             m27.time, 
             (m27.luminosity[Flavor.NU_X] + 
@@ -37,23 +37,23 @@ def plot_luminosity_curve():
             m27.luminosity[Flavor.NU_E] + 
             m27.luminosity[Flavor.NU_E_BAR]), 
             label=f'Total',
-            color = 'C3')
+            color = 'C0')
     for ax_i in range(3,6):
         axs[ax_i].plot(
             m27.time, 
             m27.meanE[Flavor.NU_E],
             label=Flavor.NU_E.to_tex(),
-            color = 'C0')
+            color = 'C1')
         axs[ax_i].plot(
             m27.time, 
             m27.meanE[Flavor.NU_E_BAR], 
             label=Flavor.NU_E_BAR.to_tex(),
-            color = 'C1')
+            color = 'C2')
         axs[ax_i].plot(
             m27.time, 
             m27.meanE[Flavor.NU_X],
             label=f'{Flavor.NU_X.to_tex()}, {Flavor.NU_X_BAR.to_tex()}',
-            color = 'C2')
+            color = 'C3')
 
     axs[0].set_xticklabels([])
     axs[1].set_xticklabels([])

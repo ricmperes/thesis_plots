@@ -57,6 +57,11 @@ def plot_significances():
     newbetter_60t = Z0(bkg_rate(60,scale_by='Area')/10 + sn_n_events(d_list,60),bkg_rate(60,scale_by = 'Area')/10)
     newbetter_100t = Z0(bkg_rate(100,scale_by='Area')/10 + sn_n_events(d_list,100),bkg_rate(100,scale_by = 'Area')/10)
     
+    x_3s_nT = np.where(nT < 3)[0][0]
+    x_3s_new_20t = np.where(new_20t < 3)[0][0]
+    x_3s_new_60t = np.where(new_60t < 3)[0][0]
+    x_3s_new_100t = np.where(new_100t < 3)[0][0]
+
     fig, ax = plt.subplots(1,1,figsize = (6,4))
 
     ax.plot(d_list, nT, label = 'XENONnT')
@@ -70,6 +75,10 @@ def plot_significances():
 
     ax.axhline(5, ls = ':', c='grey')#,label = '5$\sigma$')
     ax.axhline(3, ls = ':', c = 'grey')#,label = '3$\sigma$')
+    ax.vlines(d_list[x_3s_nT], ymin = 0, ymax = 3, ls = ':', color = 'grey')
+    ax.vlines(d_list[x_3s_new_20t], ymin = 0, ymax = 3, ls = ':', color = 'grey')
+    ax.vlines(d_list[x_3s_new_60t], ymin = 0, ymax = 3, ls = ':', color = 'grey')
+    ax.vlines(d_list[x_3s_new_100t], ymin = 0, ymax = 3, ls = ':', color = 'grey')
     ax.set_yscale('log')
     ax.minorticks_on()
     ax.set_yticks([1,3,5,10,20],[1,3,5,10,20])

@@ -7,16 +7,6 @@ from matplotlib.colors import ListedColormap
 from matplotlib.colors import ListedColormap, LogNorm
 import pandas as pd
 
-# Get the colormap colors, multiply them with the factor "a", and create new colormap
-a = 0.85
-coolwarm = plt.cm.coolwarm(np.arange(plt.cm.coolwarm.N))
-coolwarm[:,0:3] *= a 
-coolwarm = ListedColormap(coolwarm)
-
-summer = plt.cm.summer(np.arange(plt.cm.summer.N))
-summer[:,0:3] *= a 
-summer = ListedColormap(summer)
-
 def plot_s2rate():
     spectrums = pd.read_hdf('Data/area_spectrums.h5')
 
