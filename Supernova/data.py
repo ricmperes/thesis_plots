@@ -78,14 +78,15 @@ def plot_sign_bkg_rates():
     ax.errorbar(with_cuts_x, with_cuts_middle, yerr = with_cuts_err, 
                 capsize = 4, ls = '', marker = '.', color = 'C1', label = 'Bkg, with cuts')
 
+    print(no_cuts_med)
     ax.axhline(no_cuts_med, ls = '--', color = 'C0')
     ax.fill_between(np.linspace(0,500,2), no_cuts_med-no_cuts_std, 
                     no_cuts_med+no_cuts_std, alpha = 0.2, color = 'C0')
-
+    print(with_cuts_med)
     ax.axhline(with_cuts_med, ls = '--', color = 'C1')
     ax.fill_between(np.linspace(0,500,2), with_cuts_med-with_cuts_std, 
                     with_cuts_med+with_cuts_std, alpha = 0.2, color = 'C1')
-
+    print(SN_rate)
     ax.axhline(SN_rate, ls = '-.', color = 'C2', label = 'Expected signal rate')
     ax.fill_between(np.linspace(0,500,2), SN_rate-SN_rate_std, 
                     SN_rate+SN_rate_std, alpha = 0.2, color = 'C2')

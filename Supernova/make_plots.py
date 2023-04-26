@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     if plot_data:
         print('Plotting data and SN signal.')
-        plot_area_width()
+        #plot_area_width()
         plot_s2rate()
         plot_sign_bkg_rates()
     
