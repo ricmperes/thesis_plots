@@ -7,16 +7,6 @@ from matplotlib.colors import ListedColormap
 from matplotlib.colors import ListedColormap, LogNorm
 import pandas as pd
 
-# Get the colormap colors, multiply them with the factor "a", and create new colormap
-a = 0.85
-coolwarm = plt.cm.coolwarm(np.arange(plt.cm.coolwarm.N))
-coolwarm[:,0:3] *= a 
-coolwarm = ListedColormap(coolwarm)
-
-summer = plt.cm.summer(np.arange(plt.cm.summer.N))
-summer[:,0:3] *= a 
-summer = ListedColormap(summer)
-
 def plot_s2rate():
     spectrums = pd.read_hdf('Data/area_spectrums.h5')
 
@@ -32,25 +22,26 @@ def plot_s2rate():
 
     fig.savefig('Figures/s2_rate.pdf')
 
-def plot_area_width():
-    hist2d_data = np.load('Data/data_hist2d.npy', allow_pickle=True)
-    hist2d_sn = np.load('Data/sn_hist2d.npy', allow_pickle=True)
-
-    points_data = np.ma.masked_where(hist2d_data[0] == 0, hist2d_data[0])
-    points_sn = np.ma.masked_where(hist2d_sn[0] == 0, hist2d_sn[0])
-
-    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
-
-    ax.pcolormesh(hist2d_data[1],hist2d_data[2],points_data, alpha = 0.4, 
-                  cmap = summer)
-    ax.pcolormesh(hist2d_sn[1],hist2d_sn[2],points_sn, alpha = 1, 
-                  cmap = coolwarm)
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-    ax.set_xlabel('S2 area [pe]')
-    ax.set_ylabel('S2 width [ns]')
-
-    fig.savefig('Figures/sn_area_width.png')
+#def plot_area_width(): # For some reason not working properly! 
+# Axis are stretched
+#    hist2d_data = np.load('Data/data_hist2d.npy', allow_pickle=True)
+#    hist2d_sn = np.load('Data/sn_hist2d.npy', allow_pickle=True)
+#
+#    points_data = np.ma.masked_where(hist2d_data[0] == 0, hist2d_data[0])
+#    points_sn = np.ma.masked_where(hist2d_sn[0] == 0, hist2d_sn[0])
+#
+#    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
+#
+#    ax.pcolormesh(hist2d_data[1],hist2d_data[2],points_data, alpha = 0.4, 
+#                  cmap = summer)
+#    ax.pcolormesh(hist2d_sn[1],hist2d_sn[2],points_sn, alpha = 1, 
+#                  cmap = coolwarm)
+#    ax.set_yscale('log')
+#    ax.set_xscale('log')
+#    ax.set_xlabel('S2 area [pe]')
+#    ax.set_ylabel('S2 width [ns]')
+#
+#    fig.savefig('Figures/sn_area_width.png')
     
 def plot_sign_bkg_rates():
     no_cuts = np.loadtxt(
@@ -87,14 +78,15 @@ def plot_sign_bkg_rates():
     ax.errorbar(with_cuts_x, with_cuts_middle, yerr = with_cuts_err, 
                 capsize = 4, ls = '', marker = '.', color = 'C1', label = 'Bkg, with cuts')
 
+    print(no_cuts_med)
     ax.axhline(no_cuts_med, ls = '--', color = 'C0')
     ax.fill_between(np.linspace(0,500,2), no_cuts_med-no_cuts_std, 
                     no_cuts_med+no_cuts_std, alpha = 0.2, color = 'C0')
-
+    print(with_cuts_med)
     ax.axhline(with_cuts_med, ls = '--', color = 'C1')
     ax.fill_between(np.linspace(0,500,2), with_cuts_med-with_cuts_std, 
                     with_cuts_med+with_cuts_std, alpha = 0.2, color = 'C1')
-
+    print(SN_rate)
     ax.axhline(SN_rate, ls = '-.', color = 'C2', label = 'Expected signal rate')
     ax.fill_between(np.linspace(0,500,2), SN_rate-SN_rate_std, 
                     SN_rate+SN_rate_std, alpha = 0.2, color = 'C2')

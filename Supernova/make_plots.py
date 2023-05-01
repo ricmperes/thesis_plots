@@ -48,7 +48,7 @@ from matplotlib.patches import Rectangle
 from luminosity_plot import plot_luminosity_curve
 from cevns import plot_formfactor, plot_cevns_matrix
 from rates import plot_rates_energy, plot_rates_time, plot_mass_dependence
-from data import plot_area_width, plot_s2rate, plot_sign_bkg_rates
+from data import plot_s2rate, plot_sign_bkg_rates
 from significance_distance import plot_significances
 
 # Load my style ;)
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     if plot_data:
         print('Plotting data and SN signal.')
-        plot_area_width()
+        #plot_area_width()
         plot_s2rate()
         plot_sign_bkg_rates()
     
