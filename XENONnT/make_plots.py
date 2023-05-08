@@ -28,6 +28,11 @@ parser.add_argument('-b', '--bands',
                     nargs='?', const=True,
                     default= False,
                     required=False)
+parser.add_argument('-wv', '--wvelocity',
+                    help='WIMP velocity distribution.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
 
 parser.add_argument('-a', '--all',
                     help='Make all plots.',
@@ -43,7 +48,7 @@ import numpy as np
 
 from upper_limits import load_files_SI, make_plot_SI
 from photon_absorption import plot_photon_absorption
-from wimprates_plots import plot_wimp_SI_rates
+from wimprates_plots import plot_wimp_SI_rates, plot_WIMP_velocity
 from yields import yields_plot
 from bands import make_band_plot
 
@@ -77,6 +82,7 @@ if __name__ == '__main__':
         plot_wimprates = args.wrates
         plot_yields = args.yields
         plot_bands = args.bands
+        plt_wvelocity = args.wvelocity
 
     if plot_limits:
         SI_limits = load_files_SI()
@@ -95,3 +101,6 @@ if __name__ == '__main__':
         make_band_plot(20)
         print('Making band plot, 200 V/cm')
         make_band_plot(200)
+
+    if plt_wvelocity:
+        plot_WIMP_velocity()

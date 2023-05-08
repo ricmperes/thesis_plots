@@ -32,5 +32,56 @@ def plot_wimp_SI_rates():
 
     fig.savefig('Figures/wimp_rates.pdf')
 
+def plot_WIMP_velocity():
+    from scipy import  stats
+    kms = nu.km/nu.s
+
+    from wimprates import StandardHaloModel, v_earth
+    v_0, v_esc = StandardHaloModel().v_0, StandardHaloModel().v_esc
+
+    def galactic_v_dist(v):
+        # Maxwell Boltzmann distribution with
+        # 1/2 m v0**2 = k T <=> v0**2 = 2 k T / m = 2 a**2 <=> a = v_0/sqrt(2)
+        # Cut off above escape velocity (and renormalized)
+        # See Donato et al, https://arxiv.org/pdf/hep-ph/9803295.pdf, eq. 4/5
+        dist = stats.maxwell(scale=v_0/2**0.5)
+        y = dist.pdf(v) / dist.cdf(v_esc)
+        if isinstance(v, np.ndarray):
+            y[v > v_esc] = 0
+        elif v > v_esc:
+            return 0
+        return y
+
+    from wimprates import observed_speed_dist
+
+    vs = np.linspace(0, 810 * kms, 100000)
+
+    fig, ax = plt.subplots(1,1,figsize = (4, 2.5))
+
+    ax.plot(vs / kms, galactic_v_dist(vs) * kms,
+            label='Galactic frame')
+    ax.plot(vs / kms, observed_speed_dist(vs) * kms,
+            label='Local frame')
+    ax.axvline(v_0/ kms, ls = '--', alpha = 0.8, 
+               color = 'C0')#label = '$v_0$',
+    ax.axvline(v_esc/ kms, ls = ':', alpha = 0.8, 
+               color = 'C0')#, label = '$v_{esc}$'
+    ax.axvline((v_0**2 + v_earth()**2)**0.5 / kms, 
+               ls = '--', alpha = 0.8, color = 'C1')#label = '$v_0$',
+    ax.axvline((v_esc + v_earth()) / kms, ls = ':', 
+               alpha = 0.8, color = 'C1')#, label = '$v_{esc}$'
+
+
+    ax.set_ylabel("PDF [(km/s)$^{\mathrm{-1}}]$")
+    ax.set_xlabel("Speed [km/s]")
+    ax.legend()
+    ax.set_ylim(0,0.004)
+    ax.set_xlim(0,810)
+
+    fig.savefig('Figures/wimp_velocity.pdf')
+
+plt.show()
+
 if __name__ == '__main__':
     plot_wimp_SI_rates()
+    plot_WIMP_velocity()
