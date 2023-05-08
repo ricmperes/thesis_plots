@@ -9,7 +9,7 @@ def plot_wimp_SI_rates():
     materials = ['Xe', 'Ar', 'Ge', 'Si']
     ers = np.linspace(0,100,500)
 
-    fig, ax = plt.subplots(1,1,figsize = (4,3))
+    fig, ax = plt.subplots(1,1,figsize = (4,2.5))
 
     for i, _wimp_mass in enumerate(wimp_masses):
         for j, _mat in enumerate(materials):
@@ -27,7 +27,7 @@ def plot_wimp_SI_rates():
     ax.set_yscale('log')
     ax.set_xlabel('Recoil energy [keV$_{NR}$]')
     ax.set_ylabel('Rate [t$^{-1}$ y$^{-1}$ keV$^{-1}$]')
-    ax.set_ylim(1e-4,None)
+    ax.set_ylim(1e-4,0.8)
     ax.set_xlim(0,100)
 
     fig.savefig('Figures/wimp_rates.pdf')
