@@ -42,7 +42,7 @@ def load_files_SI():
 def make_plot_SI(limits):
     print('Making SI limits plot.')
 
-    fig, ax = plt.subplots(1,1,figsize = (6,2.65))
+    fig, ax = plt.subplots(1,1,figsize = (6,4.5))
 
     #Xe
     limit_key = 'XENONnT'
@@ -105,7 +105,7 @@ def make_plot_SI(limits):
 
     ax.set_xlabel('WIMP Mass [GeV/c$^2$]')
     ax.set_ylabel('SI WIMP-nucleon cross section [cm$^2$]')
-    ax.legend(loc = 'center left', bbox_to_anchor=(1., 0.5))
+    ax.legend(ncol = 4,  loc = 'lower center', bbox_to_anchor=((0.5,1)))
     #fig.set_tight_layout(True)
     fig.savefig('Figures/limits_SI.pdf')
 
