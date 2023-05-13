@@ -33,6 +33,11 @@ parser.add_argument('-wv', '--wvelocity',
                     nargs='?', const=True,
                     default= False,
                     required=False)
+parser.add_argument('-g', '--gps',
+                    help='GPS correction plots.',
+                    nargs='?', const=True,
+                    default= False,
+                    required=False)
 
 parser.add_argument('-a', '--all',
                     help='Make all plots.',
@@ -51,6 +56,7 @@ from photon_absorption import plot_photon_absorption
 from wimprates_plots import plot_wimp_SI_rates, plot_WIMP_velocity
 from yields import yields_plot
 from bands import make_band_plot
+from gps_plots import plot_gps_effect, plot_gps_schematic
 
 # Load my style ;)
 
@@ -75,14 +81,17 @@ summer = ListedColormap(summer)
 
 if __name__ == '__main__':
     if args.all:
-        plot_limits = plot_photon = True
+        plot_limits = plot_photon = plot_wimprates = plot_yields = True
+        plot_bands = plot_wvelocity = plot_gps = True
     else:
         plot_limits = args.limits
         plot_photon = args.photon
         plot_wimprates = args.wrates
         plot_yields = args.yields
         plot_bands = args.bands
-        plt_wvelocity = args.wvelocity
+        plot_wvelocity = args.wvelocity
+        plot_gps= args.gps
+
 
     if plot_limits:
         SI_limits = load_files_SI()
@@ -102,5 +111,9 @@ if __name__ == '__main__':
         print('Making band plot, 200 V/cm')
         make_band_plot(200)
 
-    if plt_wvelocity:
+    if plot_wvelocity:
         plot_WIMP_velocity()
+    
+    if plot_gps:
+        plot_gps_effect()
+        plot_gps_schematic()
