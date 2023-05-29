@@ -51,12 +51,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from upper_limits import load_files_SI, make_plot_SI
-from photon_absorption import plot_photon_absorption
-from wimprates_plots import plot_wimp_SI_rates, plot_WIMP_velocity
-from yields import yields_plot
-from bands import make_band_plot
-from gps_plots import plot_gps_effect, plot_gps_schematic
 
 # Load my style ;)
 
@@ -94,18 +88,24 @@ if __name__ == '__main__':
 
 
     if plot_limits:
+        from upper_limits import load_files_SI, make_plot_SI
         SI_limits = load_files_SI()
         make_plot_SI(SI_limits)
+
     if plot_photon:
+        from photon_absorption import plot_photon_absorption
         plot_photon_absorption()
 
     if plot_wimprates:
+        from wimprates_plots import plot_wimp_SI_rates, plot_WIMP_velocity
         plot_wimp_SI_rates()
     
     if plot_yields:
+        from yields import yields_plot
         yields_plot()
 
     if plot_bands:
+        from bands import make_band_plot
         print('Making band plot, 20 V/cm')
         make_band_plot(20)
         print('Making band plot, 200 V/cm')
@@ -115,5 +115,6 @@ if __name__ == '__main__':
         plot_WIMP_velocity()
     
     if plot_gps:
+        from gps_plots import plot_gps_effect, plot_gps_schematic
         plot_gps_effect()
         plot_gps_schematic()

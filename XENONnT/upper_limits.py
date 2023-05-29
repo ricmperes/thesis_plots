@@ -9,6 +9,7 @@ def load_files_SI():
     cresst = np.loadtxt("Data/limits/CRESSTII_SI_2016_v2.csv",delimiter=",")
     damic = np.loadtxt("Data/limits/DAMIC_2020.csv",delimiter=",")
     darkside_low = np.loadtxt("Data/limits/darkside50_lowmass_ul.csv",delimiter=",")
+    darkside_20k = np.loadtxt("Data/limits/DS_20k.csv",delimiter=",")
     darwin = np.loadtxt("Data/limits/darwin_SI.csv",delimiter=",")
     deap = np.loadtxt("Data/limits/Deap_SI_2018.csv",delimiter=",")
     lux = np.loadtxt("Data/limits/lux_SI.csv",delimiter=",")
@@ -30,6 +31,7 @@ def load_files_SI():
               'DEAP-3600' : deap,
               'Darkside-50_low' : darkside_low,
               'Darkside-50_high' : darkside_high,
+              'Darkside-20k' : darkside_20k,
               'DAMIC' : damic,
               'CDMSLite' : cdms,
               'SuperCDMS' : supercdms,
@@ -42,7 +44,7 @@ def load_files_SI():
 def make_plot_SI(limits):
     print('Making SI limits plot.')
 
-    fig, ax = plt.subplots(1,1,figsize = (6,4.5))
+    fig, ax = plt.subplots(1,1,figsize = (7.4,5))
 
     #Xe
     limit_key = 'XENONnT'
@@ -57,24 +59,34 @@ def make_plot_SI(limits):
                 ls = '-', label = limit_key, color = 'C2')
     limit_key = 'XENON1T (2-fold)'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = limit_key, color = 'C3')
+                ls = '-', label = 'XENON1T (2-fold, S2-only)',
+                color = 'C3')
     limit_key = 'XENON1T (S2-only)'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = limit_key, color = 'C4')
+                ls = '-',  color = 'C3')#, label = limit_key)
     limit_key = 'DARWIN (projection)'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = limit_key, color = 'C5')
+                ls = '-', label = limit_key, color = 'C4')
     
     #Ar
     limit_key = 'DEAP-3600'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', label = limit_key, color = 'C6')
+            ls = '--', label = limit_key, color = 'C5')
     limit_key = 'Darkside-50_low'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', label = 'Darkside-50', color = 'C7')
+            ls = '--', label = 'Darkside-50', color = 'C6')
     limit_key = 'Darkside-50_high'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', color = 'C7')
+            ls = '--', color = 'C6')
+    @np.vectorize
+    def totheten(x):
+        return 10**x
+    
+    limit_key = 'Darkside-20k'
+    ax.plot(limits[limit_key][:,0],
+            totheten(limits[limit_key][:,1]), 
+            ls = '--', color = 'C7', 
+            label = 'DarkSide-20k (projection)')
 
     #Other
     limit_key = 'DAMIC'
