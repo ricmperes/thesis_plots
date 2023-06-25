@@ -28,7 +28,7 @@ def plot_rates_energy():
     ax.set_xlim(0,20)
     ax.set_ylim(1e-3,16)
     ax.set_ylabel('Diff. rate [keV$^{-1}\cdot$t$^{-1}$]')
-    ax.set_xlabel('E$_R$ [keV$^{-1}$]')
+    ax.set_xlabel('E$_R$ [keV]')
     
     fig.savefig('Figures/diff_rate_energy.pdf')
 
