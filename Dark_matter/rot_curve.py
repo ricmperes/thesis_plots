@@ -34,7 +34,7 @@ def main():
 
 def plot_curves(figax = None):
     if figax is None:
-        fig, ax = plt.subplots(1,1, figsize=(4,4))
+        fig, ax = plt.subplots(1,1, figsize=(4,3))
     else:
         fig, ax = figax
 
@@ -62,7 +62,7 @@ def plot_curves(figax = None):
     ax.set_xlim(1, 35)
     ax.set_ylim(0, 200)
     ax.legend()
-    fig.savefig('Figures/rot_curve_all.png', bbox_inches='tight')
+    fig.savefig('Figures/rot_curve.pdf', bbox_inches='tight')
     
     if figax is None:
         plt.show()
