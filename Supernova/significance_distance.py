@@ -1,11 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import astropy.units as u
-from multimessenger.supernova.Nucleus import Target
-from multimessenger.supernova.Xenon_Atom import ATOM_TABLE
 from matplotlib.colors import ListedColormap
-from matplotlib.colors import ListedColormap, LogNorm
-
 
 # Get the colormap colors, multiply them with the factor "a", and create new colormap
 a = 0.85

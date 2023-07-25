@@ -37,19 +37,10 @@ parser.add_argument('-a', '--all',
 
 
 args = parser.parse_args()
-    
-import matplotlib as mpl
+
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-import scipy.interpolate as itp
-from matplotlib.patches import Rectangle
 
-from luminosity_plot import plot_luminosity_curve
-from cevns import plot_formfactor, plot_cevns_matrix
-from rates import plot_rates_energy, plot_rates_time, plot_mass_dependence
-from data import plot_s2rate, plot_sign_bkg_rates
-from significance_distance import plot_significances
 
 # Load my style ;)
 plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
@@ -73,25 +64,30 @@ if __name__ == '__main__':
 
     if plot_lightcurve:
         print('SNe: making plots go BAAM!')
+        from luminosity_plot import plot_luminosity_curve
         plot_luminosity_curve()
     
     if plot_cevns:
         print('Plotting ff and cevns.')
+        from cevns import plot_formfactor, plot_cevns_matrix
         plot_formfactor()
         plot_cevns_matrix()
 
     if plot_rates:
         print('Plotting rates over energy and time.')
+        from rates import plot_rates_energy, plot_rates_time, plot_mass_dependence
         plot_rates_energy()
         plot_rates_time()
         plot_mass_dependence()
 
     if plot_significance:
         print('Plotting significane curves.')
+        from significance_distance import plot_significances
         plot_significances()
 
     if plot_data:
         print('Plotting data and SN signal.')
+        from data import plot_s2rate, plot_sign_bkg_rates
         #plot_area_width()
         plot_s2rate()
         plot_sign_bkg_rates()

@@ -1,10 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import astropy.units as u
-from multimessenger.supernova.Nucleus import Target
-from multimessenger.supernova.Xenon_Atom import ATOM_TABLE
-from matplotlib.colors import ListedColormap
-from matplotlib.colors import ListedColormap, LogNorm
 import pandas as pd
 
 def plot_s2rate():
