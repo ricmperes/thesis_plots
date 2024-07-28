@@ -1,3 +1,5 @@
+import matplotlib as mpl
+from matplotlib.colors import ListedColormap
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -8,27 +10,41 @@ from scipy.ndimage.filters import gaussian_filter1d
 from scipy.integrate import cumtrapz
 from numpy.linalg import norm
 from scipy.special import gammaln
+from scipy.interpolate import make_interp_spline
+
+cm = mpl.colormaps.get_cmap('Greys')
+
+# Get the colormap colors, multiply them with the factor "a", 
+# and create new colormap
+a = 1
+cmap = plt.cm.Greys(np.arange(plt.cm.Greys.N))
+cmap[:,0:3] *= a 
+cmap = ListedColormap(cmap)
+
+plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
 
 def load_files_SI():
     print('Loading csv files for SI WIMP-nucleon cross section!')
 
-    xenon1t_SI = np.loadtxt("Data/limits/xenon1t_SI.csv",delimiter=",")
-    cdms = np.loadtxt("Data/limits/CDMSLite2018_SI.csv",delimiter=",")
-    cresst = np.loadtxt("Data/limits/CRESSTII_SI_2016_v2.csv",delimiter=",")
-    damic = np.loadtxt("Data/limits/DAMIC_2020.csv",delimiter=",")
-    darkside_low = np.loadtxt("Data/limits/darkside50_lowmass_ul.csv",delimiter=",")
-    darkside_20k = np.loadtxt("Data/limits/DS_20k.csv",delimiter=",")
-    darwin = np.loadtxt("Data/limits/darwin_SI.csv",delimiter=",")
-    deap = np.loadtxt("Data/limits/Deap_SI_2018.csv",delimiter=",")
-    lux = np.loadtxt("Data/limits/lux_SI.csv",delimiter=",")
-    lz = np.loadtxt("Data/limits/LZ_SI.csv",delimiter=",")
-    neutrino = np.loadtxt("Data/limits/neutrino_fog_SI.csv",delimiter=",")
-    pandax = np.loadtxt("Data/limits/pandax4t_SI.csv",delimiter=",")
-    xenonnt = np.loadtxt("Data/limits/xenonnt_SI.csv",delimiter=",")
-    xenon1t_2fold = np.loadtxt("Data/limits/xenon1t_2fold_SI.csv",delimiter=",")
-    xenon1t_s2only = np.loadtxt("Data/limits/xenon1t_s2only_SI.csv",delimiter=",")
-    supercdms = np.loadtxt("Data/limits/SuperCDMS_SI.csv",delimiter=",")
-    darkside_high = np.loadtxt("Data/limits/DS-50.csv",delimiter=",")
+    xenon1t_SI = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/xenon1t_SI.csv",delimiter=",")
+    cdms = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/CDMSLite2018_SI.csv",delimiter=",")
+    cresst = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/CRESSTII_SI_2016_v2.csv",delimiter=",")
+    damic = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/DAMIC_2020.csv",delimiter=",")
+    darkside_low = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/darkside50_lowmass_ul.csv",delimiter=",")
+    darkside_20k = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/DS_20k.csv",delimiter=",")
+    darwin = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/darwin_SI.csv",delimiter=",")
+    deap = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/Deap_SI_2018.csv",delimiter=",")
+    lux = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/lux_SI.csv",delimiter=",")
+    lz = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/LZ_SI.csv",delimiter=",")
+    neutrino = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/neutrino_fog_SI.csv",delimiter=",")
+    pandax = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/pandax4t_SI.csv",delimiter=",")
+    xenonnt = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/xenonnt_SI.csv",delimiter=",")
+    xenon1t_2fold = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/xenon1t_2fold_SI.csv",delimiter=",")
+    xenon1t_s2only = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/xenon1t_s2only_SI.csv",delimiter=",")
+    supercdms = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/SuperCDMS_SI.csv",delimiter=",")
+    darkside_high = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/DS-50.csv",delimiter=",")
+    xlzd200 = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/XLZD_200ty.csv",delimiter=",")
+    xlzd1000 = np.loadtxt("/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/XLZD_1000ty.csv",delimiter=",")
 
     limits = {'XENONnT' : xenonnt,
               'LZ' : lz,
@@ -44,7 +60,9 @@ def load_files_SI():
               'CDMSLite' : cdms,
               'SuperCDMS' : supercdms,
               'CRESST' : cresst,
-              'Neutrino fog' : neutrino}
+              'Neutrino fog' : neutrino,
+              'XLZD200' : xlzd200,
+              'XLZD1000' : xlzd1000}
 
     return limits
 
@@ -88,95 +106,89 @@ def plot_nu_floor(figax = None):
         fig,ax = plt.subplots(1,1,figsize=(7.4,5))
     else:
         fig,ax = figax
+    
+    vmax = 5
+    vmin = 2
+    #cmap = 'coolwarm'
 
-    vmax = 7
-    vmin = 2.2
-    data = loadtxt('Data/limits/DLNuFloorXe_detailed_SI.txt')
+    data = loadtxt('/home/atp/rperes/notebooks/thesis_plots/XENONnT/Data/limits/DLNuFloorXe_detailed_SI.txt')
     m,sig,NUFLOOR,DY = Floor_2D(data,filt=True,filt_width=2,Ex_crit=1e10)
-    cnt = ax.contourf(m,sig,DY,levels=linspace(2,15,100),vmax=vmax,vmin=vmin,cmap=cmap)
-    ax.plot(m,NUFLOOR,'-',color='brown',lw=3,path_effects=pek,zorder=100)
+    #cnt = ax.contourf(m,sig,DY,levels=linspace(0,3,50),
+    #                  vmax=vmax,vmin=vmin,cmap=cmap)
 
-    return fig,ax
+    _xx, _yy = np.meshgrid(m, sig)
+    sct = ax.scatter(_xx, _yy,c = DY,#levels=linspace(1.5,11,100),
+                      vmax=vmax,vmin=vmin, 
+                      cmap=cmap,
+                      s=2,marker = 's',rasterized=False,alpha = 0.8)
+    #_x = [m[0],m[-1]]
+    ax.fill_between(x = m,y1=np.zeros(len(m)),y2=NUFLOOR,
+                    color='grey',zorder=100, alpha = 0.1,)
+                    #label = 'Neutrino fog')
+    ax.plot(m,NUFLOOR,color='grey',
+            zorder=100, alpha = 1, lw = 1,
+            label = 'Neutrino floor')
+    
+
+    return fig,ax, sct
 
 def make_plot_SI_XLZD(limits):
     print('Making SI limits plot.')
 
-    fig, ax = plt.subplots(1,1,figsize = (7.4,5))
+    fig, ax = plt.subplots(1,1,figsize = (7.4,4.5))
 
+    @np.vectorize
+    def totheten(x):
+        return 10**x
+    
     #Xe
     limit_key = 'XENONnT'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
             ls = '-', label = limit_key, color = 'C0',
-            zorder = 10)
+            zorder = 10, lw = 2)
     limit_key = 'LZ'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
                 ls = '-', label = limit_key, color = 'C1')
     limit_key = 'PandaX-4T'
     ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = limit_key, color = 'C2')
-    limit_key = 'XENON1T (2-fold)'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = 'XENON1T (2-fold, S2-only)',
-                color = 'C3')
-    limit_key = 'XENON1T (S2-only)'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-',  color = 'C3')#, label = limit_key)
-    limit_key = 'DARWIN (projection)'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-                ls = '-', label = limit_key, color = 'C4')
-    
-    #Ar
-    limit_key = 'DEAP-3600'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', label = limit_key, color = 'C5')
-    limit_key = 'Darkside-50_low'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', label = 'Darkside-50', color = 'C6')
-    limit_key = 'Darkside-50_high'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1], 
-            ls = '--', color = 'C6')
-    @np.vectorize
-    def totheten(x):
-        return 10**x
-    
-    limit_key = 'Darkside-20k'
-    ax.plot(limits[limit_key][:,0],
-            totheten(limits[limit_key][:,1]), 
-            ls = '--', color = 'C7', 
-            label = 'DarkSide-20k (projection)')
+                ls = '-', label = limit_key, color = 'C2',
+                lw = 2)
 
-    #Other
-    limit_key = 'DAMIC'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1],
-            ls = '-.', label = limit_key, color = 'C8')
-    limit_key = 'SuperCDMS'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1],
-            ls = '-.', label = limit_key, color = 'C9')
-    limit_key = 'CDMSLite'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1],
-            ls = '-.', color = 'C9')
-    limit_key = 'CRESST'
-    ax.plot(limits[limit_key][:,0],limits[limit_key][:,1],
-            ls = '-.', label = limit_key, color = 'C10')
+    limit_key = 'XLZD200'
+    ax.plot(limits[limit_key][:,0],totheten(limits[limit_key][:,1]), 
+                ls = '--', label = 'XLZD (200 ty)', color = 'C3',
+                lw = 2)
+    
+    limit_key = 'XLZD1000'
+    ax.plot(limits[limit_key][:,0],totheten(limits[limit_key][:,1]), 
+                ls = '--', label = 'XLZD (1000 ty)', color = 'C4',
+                lw = 2)
+    
 
-    limit_key = 'Neutrino fog'
-    ax.fill_between(limits[limit_key][:,0],
-                    0,
-                    limits[limit_key][:,1],
-                    ls = ':', label = limit_key, 
-                    alpha = 0.7,
-                    color = 'lightgrey')
+    # limit_key = 'Neutrino fog'
+    # ax.fill_between(limits[limit_key][:,0],
+    #                 0,
+    #                 limits[limit_key][:,1],
+    #                 ls = ':', label = limit_key, 
+    #                 alpha = 0.7,
+    #                 color = 'lightgrey')
+
+    fig, ax, sct = plot_nu_floor(figax=(fig,ax))
 
     ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_xlim(1e0,1e3)
-    ax.set_ylim(1e-50,5e-37)
+    ax.set_xlim(5e0,1e4)
+    ax.set_ylim(6e-50,1e-45)
 
     ax.set_xlabel('WIMP Mass [GeV/c$^2$]')
     ax.set_ylabel('SI WIMP-nucleon cross section [cm$^2$]')
-    ax.legend(ncol = 4,  loc = 'lower center', bbox_to_anchor=((0.5,1)))
+    ax.legend(ncol = 3, columnspacing = 2,
+              loc = 'lower center', bbox_to_anchor=((0.5,1)))
     #fig.set_tight_layout(True)
-    fig.savefig('Figures/limits_SI_XLZD.pdf')
+    fig.colorbar(sct, ax = ax, 
+                 label = 'Gradient of discovery limit, $n$',
+                 extend='both')
+    fig.savefig('Figures/limits_SI_XLZD.jpeg', dpi = 300)
 
 
 if __name__ == '__main__':
@@ -184,5 +196,6 @@ if __name__ == '__main__':
     limits = load_files_SI()
     #make_plot_SI_XLZD(limits)
 
-    fig, ax = plot_nu_floor()
-    plt.savefig('Figures/nu_floor_XLZD.pdf')
+    # fig, ax = plot_nu_floor()
+    make_plot_SI_XLZD(limits)
+    #plt.savefig('Figures/nu_floor_XLZD.jpeg')
