@@ -16,10 +16,15 @@ cm = mpl.colormaps.get_cmap('Greys')
 
 # Get the colormap colors, multiply them with the factor "a", 
 # and create new colormap
-a = 1
-cmap = plt.cm.Greys(np.arange(plt.cm.Greys.N))
-cmap[:,0:3] *= a 
-cmap = ListedColormap(cmap)
+#a = 1
+#cmap = plt.cm.Greys(np.arange(plt.cm.Greys.N))
+#cmap = np.clip(cmap[:,0:3] * a,0,1)
+#cmap = ListedColormap(cmap)
+
+original_cmap = plt.cm.Greys  # Replace with your original cmap if different
+new_colors = original_cmap(np.linspace(0, 0.8, 256))  # Use only the first half
+cmap = ListedColormap(new_colors)
+
 
 plt.style.use('/home/atp/rperes/notebooks/thesis_plots/thesis_style.mplstyle')
 
@@ -120,10 +125,10 @@ def plot_nu_floor(figax = None):
     sct = ax.scatter(_xx, _yy,c = DY,#levels=linspace(1.5,11,100),
                       vmax=vmax,vmin=vmin, 
                       cmap=cmap,
-                      s=2,marker = 's',rasterized=False,alpha = 0.8)
+                      s=2,marker = 's',rasterized=False,alpha = 0.9)
     #_x = [m[0],m[-1]]
     ax.fill_between(x = m,y1=np.zeros(len(m)),y2=NUFLOOR,
-                    color='grey',zorder=100, alpha = 0.1,)
+                    color='grey',zorder=100, alpha = 0.15,)
                     #label = 'Neutrino fog')
     ax.plot(m,NUFLOOR,color='grey',
             zorder=100, alpha = 1, lw = 1,
