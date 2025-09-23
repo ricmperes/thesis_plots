@@ -1,3 +1,6 @@
+from xenonnt_plot_style import XENONPlotStyle as xps
+xps.use('xenonnt')
+
 import matplotlib.pyplot as plt
 from astropy import units as u
 from snewpy.models.ccsn import Bollig_2016
@@ -11,8 +14,9 @@ def plot_luminosity_curve():
     
     m27 = Bollig_2016(progenitor_mass=27*u.solMass)
     
-    fig, axs = plt.subplots(2,3,figsize = (7,3.5), 
-                            gridspec_kw = {'hspace':0.05})
+    fig, axs = xps.subplots(2,3,figsize = (7,3.5), 
+                            gridspec_kw = {'hspace':0.01},
+                            constrained_layout=True)
     axs = axs.flatten()
     for ax_i in range(3):
         axs[ax_i].plot(
@@ -82,9 +86,14 @@ def plot_luminosity_curve():
     axs[5].set_xlim(1,8)
     axs[5].set_ylim(2.5,20)
 
-    axs[2].legend()
-    
-    fig.savefig('Figures/luminosity_27Mo.pdf')
+    #axs[2].legend()
+    handles, labels = axs[2].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper center', 
+               bbox_to_anchor=(0.5, 1.08), 
+               ncol=4, columnspacing=2.5)
+    #fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.savefig('Figures/luminosity_27Mo_XENONstyle.pdf',
+                bbox_inches='tight')
 
 
 if __name__ == '__main__':

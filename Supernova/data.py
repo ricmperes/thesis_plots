@@ -1,3 +1,6 @@
+from xenonnt_plot_style import XENONPlotStyle as xps
+xps.use('xenonnt')
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -5,17 +8,19 @@ import pandas as pd
 def plot_s2rate():
     spectrums = pd.read_hdf('Data/area_spectrums.h5')
 
-    fig, ax = plt.subplots(1,1,figsize = (4,2.7))
+    fig, ax = xps.subplots(1,1,figsize = (4,2.7))
 
-    ax.step(spectrums['area'],spectrums['bkg_rate'], 
-            where = 'mid', label = 'Backgrond rate')
-    ax.step(spectrums['area'],spectrums['sn_rate'], 
-            where = 'mid', label = 'SN signal rate')
+    max_bkg = np.max(spectrums['bkg_rate'])
+    ax.step(spectrums['area']/32,spectrums['bkg_rate']/max_bkg, 
+            where = 'mid', label = 'Backgrond rate', color = 'C1')
+    ax.step(spectrums['area']/32,spectrums['sn_rate']/max_bkg, 
+            where = 'mid', label = 'SN signal rate', color = 'C3')
     ax.legend()
-    ax.set_xlabel('S2 area [pe]')
-    ax.set_ylabel('Diff. rate [Hz/pe]')
+    ax.set_xlabel('Reconstructed extracted electrons')
+    ax.set_ylabel('Diff. rate [a.u.]')
+    
 
-    fig.savefig('Figures/s2_rate.pdf')
+    fig.savefig('Figures/s2_rate_XENONstyle.png')
 
 #def plot_area_width(): # For some reason not working properly! 
 # Axis are stretched

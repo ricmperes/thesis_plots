@@ -38,6 +38,9 @@ parser.add_argument('-a', '--all',
 
 args = parser.parse_args()
 
+# from xenonnt_plot_style import XENONPlotStyle as xps
+# xps.use('xenonnt')
+
 import matplotlib.pyplot as plt
 import numpy as np
 
